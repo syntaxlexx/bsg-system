@@ -1,5 +1,5 @@
 import UserRepository from "@/data-layer/repositories/user-repository";
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import NextAuth from "next-auth";
 import authConfig from "./auth.config";
 import { db } from "./db";
@@ -10,7 +10,7 @@ export const {
   signIn,
   signOut,
 } = NextAuth({
-  adapter: PrismaAdapter(db),
+  adapter: DrizzleAdapter(db),
   session: { strategy: "jwt" },
   trustHost: true,
   pages: {
@@ -18,16 +18,16 @@ export const {
     error: "/sign-in",
   },
   events: {
-    async linkAccount({ user }) {
-      await db.user.update({
-        where: {
-          id: user.id,
-        },
-        data: {
-          emailVerified: new Date(),
-        },
-      });
-    },
+    // async linkAccount({ user }) {
+    //   await db.user.update({
+    //     where: {
+    //       id: user.id,
+    //     },
+    //     data: {
+    //       emailVerified: new Date(),
+    //     },
+    //   });
+    // },
   },
   callbacks: {
     jwt: ({ token, user }) => {

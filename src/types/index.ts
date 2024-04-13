@@ -1,4 +1,4 @@
-import { SystemLog } from "@prisma/client";
+import { SelectSystemLog } from "@/data-layer/models/schema";
 import { User } from "next-auth";
 
 export enum AUTH_ERROR {
@@ -49,7 +49,7 @@ export type SystemLogContent = {
 };
 
 export type ParsedSystemLog = SystemLogContent &
-  Omit<SystemLog, "content"> & {
+  Omit<SelectSystemLog, "content"> & {
     level: SystemLogLevel | string | null;
     user?: Pick<User, "id" | "name">;
   };

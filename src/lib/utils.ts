@@ -1,10 +1,14 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { createId } from "@paralleldrive/cuid2";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function cuid() {
+  return createId();
+}
 
 export const UNAUTHENTICATED_STATUS_CODE = 401;
 export const UNAUTHORIZED_STATUS_CODE = 403;

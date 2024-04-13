@@ -7,6 +7,8 @@ import { comparePasswords } from "./server-utils";
 import { LoginValidator } from "@/data-layer/validators/auth-validator";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { boolean } from "boolean";
+import { userSchema } from "@/data-layer/models/schema";
+import { eq } from "drizzle-orm";
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
@@ -55,14 +57,9 @@ export default {
         console.log("credentials", credentials);
         // check if forCheckout is true, log them in without email verification
         if(boolean(credentials.forCheckout)) {
-          const user = await db.user.findUnique({
-            where: {
-              // @ts-ignore: credentials.email is already provided
-              email: credentials.email,
-            },
-          });
+          const results = await db.select().from(userSchema).where(eq(userSchema.email, credentials.email)).limit(1)
 
-          return user;
+          return results.length > 0 ? results[0] : null;
         }
         
         const validatedFields = LoginValidator.safeParse(credentials);
@@ -73,18 +70,16 @@ export default {
 
         const { email, password } = validatedFields.data;
 
-        const user = await db.user.findUnique({
-          where: {
-            email,
-          },
-        });
+        const results = await db.select().from(userSchema).where(eq(userSchema.email, credentials.email)).limit(1)
 
-        if (!user?.password) {
+        if(! results.length) {
           throw new Error(`${AUTH_ERROR.USER_NOT_FOUND}`);
         }
 
-        if (user?.deletedAt) {
-          throw new Error(`${AUTH_ERROR.ACCOUNT_DEACTIVATED}`);
+        const user = results[0]
+
+        if (!user?.password) {
+          throw new Error(`${AUTH_ERROR.USER_NOT_FOUND}`);
         }
 
         // check password

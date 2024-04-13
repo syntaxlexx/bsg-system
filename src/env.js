@@ -14,13 +14,8 @@ const envSchema = z.object({
    */
   // server
   APP_URL: z.string(),
-  // DATABASE_URL: z
-  //   .string()
-  //   .url()
-  //   .refine(
-  //     (str) => !str.includes("YOUR_MYSQL_URL_HERE"),
-  //     "You forgot to change the default URL"
-  //   ),
+  TURSO_CONNECTION_URL: z.string(),
+  TURSO_AUTH_TOKEN: z.string(),
   NODE_ENV: z
     .enum(["development", "test", "production"])
     .default("development"),

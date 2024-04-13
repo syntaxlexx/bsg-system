@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1713042484576,
+      "tag": "0000_tough_blizzard",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1713042809847,
+      "tag": "0001_ordinary_darkstar",
+      "breakpoints": true
+    }
+  ]
+}
