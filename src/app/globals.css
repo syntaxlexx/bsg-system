@@ -48,3 +48,40 @@
     --ring: 20.5 90.2% 48.2%;
   }
 }
+
+
+@layer components {
+  .text-error {
+    @apply mt-1 px-1 text-xs text-red-500;
+  }
+  
+  /* Simple Table */
+  .table-responsive {
+    @apply w-full overflow-x-auto overflow-y-hidden;
+  }
+  .simple-table {
+    @apply w-full border-collapse text-left;
+  }
+  .simple-table thead tr td,
+  .simple-table thead tr th,
+  .simple-table tbody tr td,
+  .simple-table tbody tr th,
+  .simple-table tfoot tr td
+  {
+    @apply py-1.5 px-3;
+  }
+  .simple-table tbody tr {
+    @apply bg-white border-b text-left dark:bg-gray-900 dark:border-gray-700 hover:bg-gray-100;
+  }
+  .simple-table tfoot tr {
+    @apply bg-gray-100 border-b text-center dark:bg-gray-800 dark:border-gray-700;
+  }
+  .simple-table.striped tbody tr:nth-of-type(odd) { 
+    @apply bg-gray-50;
+  }
+  
+
+  .dashboard-card {
+    @apply bg-white rounded-lg shadow-lg space-y-4 p-4;
+  } 
+}
