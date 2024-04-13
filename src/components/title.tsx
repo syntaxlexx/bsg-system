@@ -15,7 +15,7 @@ interface Props {
 
 const Title: FC<Props> = ({
   text,
-  className = "text-white",
+  className = "",
   size = "n",
   dark,
   subtitle,
