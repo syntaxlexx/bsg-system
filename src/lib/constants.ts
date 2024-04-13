@@ -4,6 +4,7 @@ export const siteInfo = {
     ? String(process.env.NEXT_PUBLIC_APP_NAME)
     : "BSG Games",
   description: "Get perfect BSG games scores",
+  slogan: "Get perfect BSG games scores",
   screenshot: `${process.env.NEXT_PUBLIC_APP_URL}/screenshot.png`,
   logo: "/logos/logo.png",
   twitter: "https://twitter.com/bsg",
