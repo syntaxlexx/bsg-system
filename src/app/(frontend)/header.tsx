@@ -53,7 +53,7 @@ const Header: FC<Props> = ({}) => {
                     />
                   </svg>
                 </span>
-                <span>LOGO</span>
+                <span>{siteInfo.name}</span>
               </a>
             </div>
             <div
