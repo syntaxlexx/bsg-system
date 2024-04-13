@@ -3,6 +3,7 @@
 import { siteInfo } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { MenuIcon } from "lucide-react";
+import Link from "next/link";
 import { FC, useState } from "react";
 
 type NavItem = {
@@ -31,13 +32,13 @@ const Header: FC<Props> = ({}) => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
 
   return (
-    <section className="w-full px-6 pb-12 antialiased bg-white">
+    <header className="w-full px-6 shadow-lg antialiased bg-white">
       <div className="mx-auto max-w-7xl">
         <nav className="relative z-50 h-24 select-none">
           <div className="container relative flex flex-wrap items-center justify-between h-24 mx-auto overflow-hidden font-medium border-b border-gray-200 md:overflow-visible lg:justify-center sm:px-4 md:px-2 lg:px-0">
             <div className="flex items-center justify-start w-1/4 h-full pr-4">
-              <a
-                href="#_"
+              <Link
+                href="/"
                 className="flex items-center py-4 space-x-2 font-extrabold text-gray-900 md:py-0"
               >
                 <span className="flex items-center justify-center w-8 h-8 text-white bg-gray-900 rounded-full">
@@ -54,8 +55,9 @@ const Header: FC<Props> = ({}) => {
                   </svg>
                 </span>
                 <span>{siteInfo.name}</span>
-              </a>
+              </Link>
             </div>
+
             <div
               className={cn(
                 "top-0 left-0 items-start hidden w-full h-full p-4 text-sm bg-gray-900 bg-opacity-50 md:items-center md:w-3/4 lg:text-base md:bg-transparent md:p-0 md:relative md:flex",
@@ -66,12 +68,13 @@ const Header: FC<Props> = ({}) => {
               )}
             >
               <div className="flex-col w-full h-auto overflow-hidden bg-white rounded-lg md:bg-transparent md:overflow-visible md:rounded-none md:relative md:flex md:flex-row">
-                <a
-                  href="#_"
+                <Link
+                  href="/"
                   className="items-center block w-auto h-16 px-6 text-xl font-black leading-none text-gray-900 md:hidden"
                 >
                   {siteInfo.name}
-                </a>
+                </Link>
+
                 <div className="flex flex-col items-start justify-center w-full space-x-6 text-center lg:space-x-8 md:w-2/3 md:mt-0 md:flex-row md:items-center">
                   {navItems.map((item) => (
                     <a
@@ -89,22 +92,24 @@ const Header: FC<Props> = ({}) => {
                     </a>
                   ))}
                 </div>
+
                 <div className="flex flex-col items-start justify-end w-full pt-4 md:items-center md:w-1/3 md:flex-row md:py-0">
-                  <a
-                    href="#"
+                  <Link
+                    href="/sign-in"
                     className="w-full px-6 py-2 mr-0 text-gray-700 md:px-3 md:mr-2 lg:mr-3 md:w-auto"
                   >
                     Sign In
-                  </a>
-                  <a
-                    href="#_"
+                  </Link>
+                  <Link
+                    href="/sign-in"
                     className="inline-flex items-center w-full px-6 py-3 text-sm font-medium leading-4 text-white bg-gray-900 md:w-auto md:rounded-full hover:bg-gray-800 focus:outline-none md:focus:ring-2 focus:ring-0 focus:ring-offset-2 focus:ring-gray-800"
                   >
                     Sign Up
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
+
             <div
               onClick={() => setShowMenu(!showMenu)}
               className="absolute right-0 flex flex-col items-end justify-center w-10 h-10 bg-white rounded-full cursor-pointer md:hidden hover:bg-gray-100"
@@ -114,7 +119,7 @@ const Header: FC<Props> = ({}) => {
           </div>
         </nav>
       </div>
-    </section>
+    </header>
   );
 };
 

@@ -1,0 +1,11 @@
+User-agent: *
+Disallow: 
+Disallow: /cgi-bin/
+Disallow: /account-verification
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /shop-dashboard
+Disallow: /account-inactive
+Disallow: /docs
