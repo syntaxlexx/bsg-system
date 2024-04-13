@@ -1,10 +1,8 @@
 import UserRepository from "@/data-layer/repositories/user-repository";
-import { KafkaSubTopics, KafkaTopics } from "@/types";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
 import authConfig from "./auth.config";
 import { db } from "./db";
-import qstash from "./qstash";
 
 export const {
   handlers: { GET, POST },
@@ -61,18 +59,6 @@ export const {
         id: user.id!,
         email: user.email,
         name: user.name,
-      });
-
-      // send event to kafka for further processing
-      await qstash.sendMessageToTopic({
-        topic: KafkaTopics.auth,
-        subtopic: KafkaSubTopics.login,
-        payload: {
-          userId: user.id,
-          name: user.name,
-          email: user.email,
-          date: new Date(),
-        },
       });
 
       // allow oauth without email verification

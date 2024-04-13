@@ -13,7 +13,6 @@ datasource db {
   url      = "file:./main-db.db"
 }
 
-// TODO: add userStatus to users schema
 model User {
   id              String    @id @default(cuid())
   name            String? // username
@@ -33,8 +32,9 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  accounts Account[]
-  sessions Session[]
+  accounts   Account[]
+  sessions   Session[]
+  systemLogs SystemLog[]
 
   @@index([createdAt])
   @@index([name])
@@ -83,4 +83,20 @@ model VerificationToken {
 
   @@unique([email, token])
   @@map("verification_tokens")
+}
+
+model SystemLog {
+  id      String  @id @default(cuid())
+  content String
+  level   String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  userId String? @map("user_id")
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+
+  @@index([createdAt])
+  @@index([userId])
+  @@map("system_logs")
 }

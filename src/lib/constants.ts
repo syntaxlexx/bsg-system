@@ -14,6 +14,12 @@ export const siteInfo = {
   googleTrackingId: `${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TAG}`,
 };
 
+export const PAGE_LIMITS = {
+  users: 4 * 5,
+  systemLogs: 4 * 5,
+  reports: 25,
+};
+
 export const BSG_STEPS = {
   STEP1: {
     title: "Practice Round",

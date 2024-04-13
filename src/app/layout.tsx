@@ -6,6 +6,7 @@ import { siteInfo } from "@/lib/constants";
 import Header from "./header";
 import Footer from "./footer";
 import { env } from "@/env";
+import { auth } from "@/lib/auth";
 
 const fontName = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
@@ -48,15 +49,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html lang="en">
       <body className={fontName.className}>
-        <Header />
+        <Header session={session} />
 
         <main className="min-h-[60vh]">{children}</main>
 

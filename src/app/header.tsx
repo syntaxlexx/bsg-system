@@ -5,6 +5,10 @@ import { cn } from "@/lib/utils";
 import { MenuIcon } from "lucide-react";
 import Link from "next/link";
 import { FC, useState } from "react";
+import { Session } from "next-auth";
+import { signOut } from "next-auth/react";
+import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 type NavItem = {
   title: string;
@@ -26,10 +30,13 @@ const navItems: NavItem[] = [
   },
 ];
 
-interface Props {}
+interface Props {
+  session: Session | null | undefined;
+}
 
-const Header: FC<Props> = ({}) => {
+const Header: FC<Props> = ({ session }) => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
+  const pathname = usePathname();
 
   return (
     <header className="w-full px-6 shadow-lg antialiased bg-white">
@@ -94,18 +101,41 @@ const Header: FC<Props> = ({}) => {
                 </div>
 
                 <div className="flex flex-col items-start justify-end w-full pt-4 md:items-center md:w-1/3 md:flex-row md:py-0">
-                  <Link
-                    href="/sign-in"
-                    className="w-full px-6 py-2 mr-0 text-gray-700 md:px-3 md:mr-2 lg:mr-3 md:w-auto"
-                  >
-                    Sign In
-                  </Link>
-                  <Link
-                    href="/sign-in"
-                    className="inline-flex items-center w-full px-6 py-3 text-sm font-medium leading-4 text-white bg-gray-900 md:w-auto md:rounded-full hover:bg-gray-800 focus:outline-none md:focus:ring-2 focus:ring-0 focus:ring-offset-2 focus:ring-gray-800"
-                  >
-                    Sign Up
-                  </Link>
+                  {session ? (
+                    <>
+                      <Link
+                        href="/admin"
+                        className="inline-flex items-center w-full px-6 py-3 text-sm font-medium leading-4 text-white bg-gray-900 md:w-auto md:rounded-full hover:bg-gray-800 focus:outline-none md:focus:ring-2 focus:ring-0 focus:ring-offset-2 focus:ring-gray-800"
+                      >
+                        Dashboard
+                      </Link>
+                      <Button
+                        className="w-full px-6 py-2 mr-0 text-gray-700 md:px-3 md:mr-2 lg:mr-3 md:w-auto"
+                        onClick={() => {
+                          signOut({
+                            callbackUrl: `${window.location.origin}`,
+                          });
+                        }}
+                      >
+                        Logout
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        href="/sign-in"
+                        className="w-full px-6 py-2 mr-0 text-gray-700 md:px-3 md:mr-2 lg:mr-3 md:w-auto"
+                      >
+                        Sign In
+                      </Link>
+                      <Link
+                        href="/sign-in"
+                        className="inline-flex items-center w-full px-6 py-3 text-sm font-medium leading-4 text-white bg-gray-900 md:w-auto md:rounded-full hover:bg-gray-800 focus:outline-none md:focus:ring-2 focus:ring-0 focus:ring-offset-2 focus:ring-gray-800"
+                      >
+                        Sign Up
+                      </Link>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

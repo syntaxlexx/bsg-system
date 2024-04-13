@@ -1,5 +1,5 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
-import AuthForm from "./auth-form";
 
 interface Props {}
 
@@ -38,21 +38,30 @@ const Page = async ({}: Props) => {
 
           <div className="w-full bg-white lg:w-6/12 xl:w-5/12">
             <div className="flex flex-col items-start justify-start w-full h-full p-10 lg:p-16 xl:p-24">
-              <h4 className="w-full text-3xl font-bold">Sign in</h4>
+              <h4 className="w-full text-3xl font-bold">Sign up</h4>
               <p className="text-lg text-gray-500">
-                or, if you don&apos;t have an account, you can
+                or, if you have an account, you can
                 <br />
                 <Link
-                  href="/sign-up"
+                  href="/sign-in"
                   className="text-blue-600 underline"
                   data-primary="blue-600"
                 >
-                  sign up
+                  sign in
                 </Link>
               </p>
 
               <div className="mt-10 w-full">
-                <AuthForm />
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Registration closed!</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-xl text-muted-foreground">
+                      Check in later.
+                    </p>
+                  </CardContent>
+                </Card>
               </div>
             </div>
           </div>
