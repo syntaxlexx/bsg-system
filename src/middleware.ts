@@ -16,11 +16,6 @@ export default auth((req) => {
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthRoutes);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-  console.log("req.auth", req.auth);
-  console.log("isAuthRoute", isAuthRoute);
-  console.log("nextUrl.pathname", nextUrl.pathname);
-  console.log("isLoggedIn", isLoggedIn);
-
   if (isApiAuthRoute) {
     return null;
   }
@@ -35,10 +30,6 @@ export default auth((req) => {
   // finally check dahsboard routes now
   if (!isLoggedIn) {
     for (let i = 0; i < dashboardRoutes.length; i++) {
-      console.log(
-        "nextUrl.pathname.startsWith(dashboardRoutes[i]!)",
-        nextUrl.pathname.startsWith(dashboardRoutes[i]!)
-      );
       if (
         dashboardRoutes[i] &&
         nextUrl.pathname.startsWith(dashboardRoutes[i]!)
