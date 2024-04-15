@@ -5,8 +5,8 @@ import { Toaster } from "@/components/ui/sonner";
 import { siteInfo } from "@/lib/constants";
 import Header from "./header";
 import Footer from "./footer";
-import { env } from "@/env";
 import { auth } from "@/lib/auth";
+import { env } from "@/env";
 
 const fontName = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 

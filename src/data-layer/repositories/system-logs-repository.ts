@@ -8,6 +8,9 @@ import {
   SystemLogLevel,
 } from "@/types";
 import dayjs from "dayjs";
+import { systemLogSchema } from "../models/schema";
+import { SQL, count, desc, eq, gte, ilike, like } from "drizzle-orm";
+import { cuid } from "@/lib/utils";
 
 export default class SystemLogRepository {
   constructor() {
@@ -15,21 +18,19 @@ export default class SystemLogRepository {
   }
 
   static async get() {
-    const data = await db.systemLog.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+    const data = await db
+      .select()
+      .from(systemLogSchema)
+      .orderBy(desc(systemLogSchema.createdAt));
 
     return data;
   }
 
   static async find(id: string, include: {}) {
-    const item = await db.systemLog.findUnique({
-      where: {
-        id,
-      },
-      include: include,
+    const item = await db.query.systemLogSchema.findFirst({
+      where: eq(systemLogSchema.id, id),
+      orderBy: desc(systemLogSchema.createdAt),
+      with: include,
     });
 
     if (!item) return null;
@@ -64,39 +65,35 @@ export default class SystemLogRepository {
   }): Promise<PaginatedData<ParsedSystemLog>> {
     const { skip, take } = await generateTakeAndSkip({ limit, page });
 
-    const data = await db.systemLog.findMany({
-      where: {
-        ...(search ? { content: { contains: search } } : {}),
-        ...(userId ? { userId } : {}),
-        ...(onlyForToday
-          ? {
-              createdAt: {
-                gte: dayjs().startOf("day").toDate(),
-              },
-            }
-          : {}),
+    const data = await db.query.systemLogSchema.findMany({
+      where: (systemLogSchema, { eq, and }) => {
+        const args: SQL[] = [];
+        if (search) args.push(like(systemLogSchema.content, `%${search}%`));
+        if (userId) args.push(eq(systemLogSchema.userId, userId));
+        if (onlyForToday)
+          args.push(
+            gte(systemLogSchema.createdAt, dayjs().startOf("day").toDate())
+          );
+        return and(...args);
       },
-      include: {
+      with: {
         user: {
-          select: {
+          columns: {
             id: true,
             name: true,
           },
         },
       },
-      orderBy: {
-        createdAt: "desc",
-      },
-      take,
-      skip,
+      orderBy: desc(systemLogSchema.createdAt),
+      limit: take,
+      offset: skip,
     });
 
-    const total = await db.systemLog.count({
-      where: {
-        ...(search ? { content: { contains: search } } : {}),
-        ...(userId ? { userId } : {}),
-      },
-    });
+    const total = await db
+      .select({ count: count() })
+      .from(systemLogSchema)
+      .where(search ? ilike(systemLogSchema.content, search) : undefined)
+      .where(userId ? eq(systemLogSchema.userId, userId) : undefined);
 
     const meta = await generateMeta({
       total,
@@ -131,12 +128,11 @@ export default class SystemLogRepository {
     userId?: string | null;
     level?: SystemLogLevel;
   }) {
-    const data = await db.systemLog.create({
-      data: {
-        userId,
-        content: JSON.stringify(content),
-        level,
-      },
+    const data = await db.insert(systemLogSchema).values({
+      id: cuid(),
+      userId,
+      content: JSON.stringify(content),
+      level,
     });
 
     return data;

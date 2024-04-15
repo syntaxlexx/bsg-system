@@ -15,6 +15,13 @@
       "when": 1713042809847,
       "tag": "0001_ordinary_darkstar",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1713190767393,
+      "tag": "0002_cooing_purifiers",
+      "breakpoints": true
     }
   ]
 }

@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   integer,
   primaryKey,
@@ -83,6 +83,7 @@ export const systemLogSchema = sqliteTable("system_log", {
     onUpdate: "cascade",
   }),
   content: text("content").notNull(),
+  level: text("level").default("info").notNull(),
   createdAt: integer("created_at", { mode: "timestamp" }).default(
     sql`(strftime('%s', 'now'))`
   ),
@@ -90,6 +91,16 @@ export const systemLogSchema = sqliteTable("system_log", {
     sql`(strftime('%s', 'now'))`
   ),
 });
+
+export const systemLogRelationsSchema = relations(
+  systemLogSchema,
+  ({ one }) => ({
+    user: one(userSchema, {
+      fields: [systemLogSchema.userId],
+      references: [userSchema.id],
+    }),
+  })
+);
 
 export type InsertSystemLog = typeof systemLogSchema.$inferInsert;
 export type SelectSystemLog = typeof systemLogSchema.$inferSelect;
